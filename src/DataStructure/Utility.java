@@ -866,9 +866,13 @@ public class Utility {
 	 */
 	public static void createNearSolution(int nStessaSquadra, int nSquadraDiversa){
 		for(int i=0;i<nStessaSquadra;i++){
+			//DEBUG
+			System.out.println("Stessa Squadra");
 			mossaStessaSquadraPriority();
 		}
 		for(int i=0; i<nSquadraDiversa;i++){
+			//DEBUG
+			System.out.println("Squadra Diversa");
 			mossaSquadraDiversa();
 		}
 	}
@@ -879,7 +883,7 @@ public class Utility {
 	 * reputata come accettata cioè quella iniziale
 	 */
 	public static void acceptNewSolution(){
-		initialSolution.setListaInterventi(valuateSolution.getListaInterventi());
+		initialSolution.setListaInterventi2(valuateSolution.getListaInterventi());
 	}
 	
 	/**
@@ -888,7 +892,7 @@ public class Utility {
 	 */
 	
 	public static void restoreToInitialSolution(){
-		valuateSolution.setListaInterventi(initialSolution.getListaInterventi());
+		valuateSolution.setListaInterventi2(initialSolution.getListaInterventi());
 	}
 	
 	/**

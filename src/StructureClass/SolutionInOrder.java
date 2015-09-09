@@ -51,7 +51,53 @@ public class SolutionInOrder {
 		listaDistanza = new ArrayList<Float>();
 		
 		// TODO Auto-generated constructor stub
-		setListaInterventi(solution.getListaInterventi());
+		setListaInterventi2(solution.getListaInterventi());
+	}
+	
+	/**
+	 * TEST!!!!
+	 * 
+	 * @param lista
+	 */
+	
+	public void setListaInterventi2(ArrayList<ArrayList<Intervento>> lista){
+		//Creo una ArrayList<String> degli interventi
+				listaInterventiString.clear();
+				listaInterventi.clear();
+				listaTempo.clear();
+				listaCosto.clear();
+				listaDistanza.clear();
+				
+		listaInterventi = new ArrayList<ArrayList<Intervento>>(lista);
+		
+		//Calcolo la lista dei costi,tempi e durata
+				for(int i=0;i<listaInterventi.size();i++){
+					int listaInt[]=new int[listaInterventi.get(i).size()];
+					for(int j=0;j<listaInterventi.get(i).size();j++){
+						int idInt = Integer.valueOf(listaInterventi.get(i).get(j).getId());
+						listaInt[j]=idInt;
+					}
+					listaCosto.add(DataStructure.Utility.costoIntervetiPerSquadra(listaInt, String.valueOf(i)));
+					listaTempo.add(DataStructure.Utility.tempoInterventiPerSquadra(listaInt, String.valueOf(i)));
+					listaDistanza.add(DataStructure.Utility.distanzaInterventiPerSquadra(listaInt, String.valueOf(i)));
+				}
+				//Ricalcolo il costo totale della soluzione
+				costoTotale=0;
+				for(int i=0;i<listaCosto.size();i++){
+					costoTotale+=listaCosto.get(i);
+				}
+				
+				//Ridefinisco la listaInterventiString
+				/*for(int i=0;i<listaInterventi.size();i++){
+					String comodo= new String("");
+					for(int j=0;j<listaInterventi.get(i).size();j++){
+						comodo+=listaInterventi.get(i).get(j).getId();
+					}
+					listaInterventiString.add(comodo);
+				}
+				*/
+				rebuildStringListaInt();
+				
 	}
 	/**
 	 * Metodo per il set della lista di interventi
@@ -171,14 +217,15 @@ public class SolutionInOrder {
 		}
 		
 		//Ridefinisco la listaInterventiString
-		for(int i=0;i<listaInterventi.size();i++){
+		/*for(int i=0;i<listaInterventi.size();i++){
 			String comodo= new String("");
 			for(int j=0;j<listaInterventi.get(i).size();j++){
 				comodo+=listaInterventi.get(i).get(j).getId();
 			}
 			listaInterventiString.add(comodo);
 		}
-		
+		*/
+		rebuildStringListaInt();
 		//restituisco l'id dell'intervento eliminato
 		return idIntervento;
 	}
@@ -216,13 +263,14 @@ public class SolutionInOrder {
 		}
 		
 		//Ridefinisco la listaInterventiString
-		for(int i=0;i<listaInterventi.size();i++){
+		/*for(int i=0;i<listaInterventi.size();i++){
 			String comodo= new String("");
 			for(int j=0;j<listaInterventi.get(i).size();j++){
 				comodo+=listaInterventi.get(i).get(j).getId();
 			}
 			listaInterventiString.add(comodo);
-		}
+		}*/
+		rebuildStringListaInt();
 				
 	}
 	
@@ -279,13 +327,14 @@ public class SolutionInOrder {
 		}
 		
 		//Ridefinisco la listaInterventiString
-		for(int i=0;i<listaInterventi.size();i++){
+		/*for(int i=0;i<listaInterventi.size();i++){
 			String comodo= new String("");
 			for(int j=0;j<listaInterventi.get(i).size();j++){
-				comodo+=listaInterventi.get(i).get(j).getId();
+				comodo+="-"+listaInterventi.get(i).get(j).getId();
 			}
 			listaInterventiString.add(comodo);
-		}
+		}*/
+		rebuildStringListaInt();
 				
 	}	
 	
@@ -355,6 +404,7 @@ public class SolutionInOrder {
 		return listaInterventiString;
 	}
 	*/
+	/*
 	public ArrayList<String> getListaInterventi(){
 		ArrayList<String> listaInt = new ArrayList<String>();
 		
@@ -367,14 +417,20 @@ public class SolutionInOrder {
 		}
 		return listaInt;
 	}
-	
+	*/
+	/**
+	 * Metodo Get per la lista di Interventi
+	 * @return ArrayList<ArrayList<Intervento>>
+	 */
+	public ArrayList<ArrayList<Intervento>> getListaInterventi(){
+		return listaInterventi;
+	}
 	/**
 	 * 
 	 * @param element1
 	 * @param element2
 	 */
 	public void swapIntSameSquad(int idSquadra,int element1,int element2){
-		
 		
 		if(listaInterventi.get(idSquadra).size()>1){
 			listaTempo.clear();
@@ -403,13 +459,14 @@ public class SolutionInOrder {
 			}
 					
 			//Ridefinisco la listaInterventiString
-			for(int i=0;i<listaInterventi.size();i++){
+			/*for(int i=0;i<listaInterventi.size();i++){
 				String comodo= new String("");
 				for(int j=0;j<listaInterventi.get(i).size();j++){
 					comodo+=listaInterventi.get(i).get(j).getId();
 				}
 				listaInterventiString.add(comodo);
-			}
+			}*/
+			rebuildStringListaInt();
 		}
 		else{
 			System.err.println("Impossibile effettuare lo swap per la squadra selezionata");
@@ -478,14 +535,17 @@ public class SolutionInOrder {
 		}
 				
 		//Ridefinisco la listaInterventiString
-		for(int i=0;i<listaInterventi.size();i++){
+		/*for(int i=0;i<listaInterventi.size();i++){
 			String comodo= new String("");
 			for(int j=0;j<listaInterventi.get(i).size();j++){
 				comodo+=listaInterventi.get(i).get(j).getId();
 			}
 			listaInterventiString.add(comodo);
-		}
+		}*/
+		rebuildStringListaInt();
 	}
+	
+	
 	/**
 	 * Ridefinizione del metodo toString()
 	 */
@@ -497,6 +557,22 @@ public class SolutionInOrder {
 		}
 		result+="Costo TOTALE:"+costoTotale;
 		return result;
+	}
+	
+	/**
+	 * Metodo di comodo per ricreare la lista degli interventi in formato String
+	 */
+	private void rebuildStringListaInt(){
+		for(int i=0;i<listaInterventi.size();i++){
+			String comodo= new String("");
+			for(int j=0;j<listaInterventi.get(i).size();j++){
+				if(j==0)
+					comodo+=listaInterventi.get(i).get(j).getId();
+				else
+					comodo+="-"+listaInterventi.get(i).get(j).getId();
+			}
+			listaInterventiString.add(comodo);
+		}
 	}
 	
 }

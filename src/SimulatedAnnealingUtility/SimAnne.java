@@ -137,12 +137,18 @@ public class SimAnne {
 				// double currentEngery = currentSolution.getDistance();
 				float currentEngery = DataStructure.Utility.initialSolution.getCosto();
 				float neighbourEngery = DataStructure.Utility.valuateSolution.getCosto();
+				
+				//DEBUG
+				System.out.println("Init:"+DataStructure.Utility.initialSolution.toString());
+				System.out.println("Value:"+DataStructure.Utility.valuateSolution.toString());
 
 				// Comparazione del costo della nuova soluzione con quello della
 				// vecchia
 				// ed accettazione della nuova soluzione sulla base della
 				// funziore di accettazione
 				if (accettazione(neighbourEngery, currentEngery)) {
+					//DEBUG
+					System.out.println("Accetto!!");
 					DataStructure.Utility.acceptNewSolution();
 				} else {
 					DataStructure.Utility.restoreToInitialSolution();
