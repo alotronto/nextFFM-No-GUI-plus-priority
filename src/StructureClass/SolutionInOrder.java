@@ -96,7 +96,7 @@ public class SolutionInOrder {
 					listaInterventiString.add(comodo);
 				}
 				*/
-				rebuildStringListaInt();
+				//rebuildStringListaInt();
 				
 	}
 	/**
@@ -225,7 +225,7 @@ public class SolutionInOrder {
 			listaInterventiString.add(comodo);
 		}
 		*/
-		rebuildStringListaInt();
+		//rebuildStringListaInt();
 		//restituisco l'id dell'intervento eliminato
 		return idIntervento;
 	}
@@ -270,7 +270,7 @@ public class SolutionInOrder {
 			}
 			listaInterventiString.add(comodo);
 		}*/
-		rebuildStringListaInt();
+		//rebuildStringListaInt();
 				
 	}
 	
@@ -334,7 +334,7 @@ public class SolutionInOrder {
 			}
 			listaInterventiString.add(comodo);
 		}*/
-		rebuildStringListaInt();
+		//rebuildStringListaInt();
 				
 	}	
 	
@@ -430,6 +430,7 @@ public class SolutionInOrder {
 	 * @param element1
 	 * @param element2
 	 */
+	
 	public void swapIntSameSquad(int idSquadra,int element1,int element2){
 		
 		if(listaInterventi.get(idSquadra).size()>1){
@@ -459,20 +460,28 @@ public class SolutionInOrder {
 			}
 					
 			//Ridefinisco la listaInterventiString
-			/*for(int i=0;i<listaInterventi.size();i++){
-				String comodo= new String("");
-				for(int j=0;j<listaInterventi.get(i).size();j++){
-					comodo+=listaInterventi.get(i).get(j).getId();
-				}
-				listaInterventiString.add(comodo);
-			}*/
-			rebuildStringListaInt();
+			//for(int i=0;i<listaInterventi.size();i++){
+			//	String comodo= new String("");
+			//	for(int j=0;j<listaInterventi.get(i).size();j++){
+			//		comodo+=listaInterventi.get(i).get(j).getId();
+			//	}
+			//	listaInterventiString.add(comodo);
+			//}
+			//rebuildStringListaInt();
+			
+			//DEBUG
+			int count = listaInterventi.get(0).size()+
+					listaInterventi.get(1).size()+
+					listaInterventi.get(2).size()+
+					listaInterventi.get(3).size();
+			System.out.println(count);
 		}
 		else{
 			System.err.println("Impossibile effettuare lo swap per la squadra selezionata");
 		}
 		
 	}
+	
 	
 	public void swapIntFromTwoSquadPriority(int idSquqadra1, int idSquadra2, int idIntervento){
 		//Estraggo l'intervento da rimuovere dalla squadra1
@@ -507,7 +516,7 @@ public class SolutionInOrder {
 			}
 			
 		}
-		//Intersico l'intervenot all'interno della lista di interveti della squadra2
+		//Inserisco l'intervento all'interno della lista di interveti della squadra2
 		listaInterventi.get(idSquadra2).add(positionToInsert, intToSwap);
 		
 		//Aggiorno le strutture dell'oggetto
@@ -542,7 +551,14 @@ public class SolutionInOrder {
 			}
 			listaInterventiString.add(comodo);
 		}*/
-		rebuildStringListaInt();
+		//rebuildStringListaInt();
+		
+		//DEBUG
+		int count = listaInterventi.get(0).size()+
+				listaInterventi.get(1).size()+
+				listaInterventi.get(2).size()+
+				listaInterventi.get(3).size();
+		System.out.println(count);
 	}
 	
 	
@@ -562,7 +578,7 @@ public class SolutionInOrder {
 	/**
 	 * Metodo di comodo per ricreare la lista degli interventi in formato String
 	 */
-	private void rebuildStringListaInt(){
+	/*private void rebuildStringListaInt(){
 		for(int i=0;i<listaInterventi.size();i++){
 			String comodo= new String("");
 			for(int j=0;j<listaInterventi.get(i).size();j++){
@@ -573,6 +589,6 @@ public class SolutionInOrder {
 			}
 			listaInterventiString.add(comodo);
 		}
-	}
+	}*/
 	
 }
