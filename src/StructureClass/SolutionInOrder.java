@@ -393,6 +393,12 @@ public class SolutionInOrder {
 	public ArrayList<Intervento> getListaIntIntervento(int idSquadra){
 		ArrayList<Intervento> result = new ArrayList<Intervento>();
 		result = listaInterventi.get(idSquadra);
+		//DEBUG
+		for(int i=0; i<result.size(); i++){
+			System.out.println(result.get(i).getId()+"-");
+			
+		}
+		System.out.println("--");
 		return result;
 	}
 	
