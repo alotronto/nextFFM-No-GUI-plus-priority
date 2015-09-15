@@ -13,20 +13,7 @@ public class StartAppl {
 			DataBaseUtility.Utility.setDB(String.valueOf(args[1]));
 			DataBaseUtility.Utility.setUser(String.valueOf(args[2]));
 			DataBaseUtility.Utility.setPass(String.valueOf(args[3]));
-		 
-		  
-			// DataStructure.Utility.initCostoCarguranti();
-			// DataStructure.Utility.initMapSpostamenti();
-			// DataStructure.Utility.initSquadre();
-			// DataStructure.Utility.initInterventi(); //
-			// DataStructure.Utility.createInitialSolution(); // Creazione di una
-			// soluzione iniziale casuale ma con una distribuzione // uniforma tra i
-			// teams DataStructure.Utility.createInitialSolutionUniform();
-			//
-			//DataBaseUtility.Utility.setHost("localhost");
-			//DataBaseUtility.Utility.setDB("nextffm20130926");
-			//DataBaseUtility.Utility.setUser("root");
-			//DataBaseUtility.Utility.setPass("28bh0608");
+		
 
 			DataStructure.Utility.initCostoCarguranti();
 			DataStructure.Utility.initMapSpostamenti();

@@ -446,11 +446,13 @@ public class Utility {
 	 * @param indiceSquadra
 	 * @return true se l'intervetnto puo' essere eseguito dalla squadro, false altrimenti
 	 */
-	public static boolean checkIntSquad(int indiceIntervento, int indiceSquadra){
+	public static boolean checkIntSquad(int idIntervento, int indexSquad){
+		
+		int indexInt = getIndexFromId_Intervention(idIntervento);
 		
 		
-		ArrayList<String> compIntervneto = interventi.get(indiceIntervento).getCompetenze();
-		ArrayList<String> compSquadra = squadre.get(indiceSquadra).getCompentenze();
+		ArrayList<String> compIntervneto = interventi.get(indexInt).getCompetenze();
+		ArrayList<String> compSquadra = squadre.get(indexSquad).getCompentenze();
 		
 		for(int i=0; i < compIntervneto.size(); i++){
 			if(!compSquadra.contains(compIntervneto.get(i))){
@@ -458,6 +460,22 @@ public class Utility {
 			}	
 		}
 		return true;
+	}
+	
+	/**
+	 * Metodi di supporto che ritorno l'indice dell'ArrayList di Interventi il cui elemento 
+	 * ha id uguale a @param idIntervention
+	 * @return
+	 */
+	public static int getIndexFromId_Intervention(int idIntervention){
+		int result = -1;
+		for(int i=0; i<interventi.size(); i++){
+			if(Integer.valueOf(interventi.get(i).getId()) == idIntervention){
+				result = i;
+				return result;
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -469,13 +487,30 @@ public class Utility {
 	public static ArrayList<String> getListaSquadForInt(int idIntervento){
 		ArrayList<String> result = new ArrayList<String>();
 		for(int i=0;i<squadre.size();i++){
-			if(checkIntSquad(idIntervento-1, i)){
+			if(checkIntSquad(idIntervento, i)){
 				result.add(new String(String.valueOf(i)));
 			}
 		}
 		return result;
 	}
 	
+	/**
+	 * Metodo di supporto per ottenere una lista di squadre che hanno le competenze per
+	 * eseguire l'intervento con id @param idIntervento. La lista ritornata non avrà tra i suoi
+	 * elemente l'indice della squadra @param indexTeam
+	 * @return
+	 */
+	public static ArrayList<String> getListaSquadForInt(int idIntervento, int indexTeam){
+		ArrayList<String> result = new ArrayList<String>();
+		for(int i=0;i<squadre.size();i++){
+			if(i!=indexTeam){
+				if(checkIntSquad(idIntervento, i)){
+					result.add(new String(String.valueOf(i)));
+				}
+			}
+		}
+		return result;
+	}
 	
 	/**
 	 * Metdo di supporto per effettuare la mossa per la modifica della soluzione iniziale
@@ -599,54 +634,57 @@ public class Utility {
 	 * un' alatra squadra
 	 */
 	public static void mossaSquadraDiversa(){
-		int selectedSquad1 = sRandom.nextInt(squadre.size());
+		boolean reselectTeam = false;
+		int selectedSquad1;
 		ArrayList<String> listaPossSquadre = new ArrayList<String>();
-		//Controllo che la squadra selezionata abbia almeno un elemento
-		while(valuateSolution.getListaIntIntervento(selectedSquad1).size() < 1){
-			selectedSquad1 = sRandom.nextInt(squadre.size());
-		}
-		//Seleziono l'elemento della squadra1 da dare alle squadra2
-		int idIntToDonate = Integer.valueOf(valuateSolution.getListaIntIntervento(selectedSquad1).get(
-				sRandom.nextInt(valuateSolution.getListaIntIntervento(selectedSquad1).size())).getId()
-				);
-		//cacolo una lista di possibili squadre a cui assegnare l'intervento
-		//selezionato
 		
-		listaPossSquadre=getListaSquadForInt(idIntToDonate);
-		
-		//Controllo che l'intervento selezionato possa essere ceduto a un'altra squadra
-		while(listaPossSquadre.size()==1){
-			//controllo che la lista degli interventi della squadra1 abbia più 
-			//di un intervento
-			if(valuateSolution.getListaIntIntervento(selectedSquad1).size()==1){
-				int selectedComodoSquad = sRandom.nextInt(squadre.size());
-				while(selectedComodoSquad == selectedSquad1){
-					selectedComodoSquad = sRandom.nextInt(squadre.size());
+		// Seleziono un team che abbia assegnato nella sua lista almeno un
+		// intervento
+		do {
+			do {
+				selectedSquad1 = sRandom.nextInt(squadre.size());
+			} while (valuateSolution.getListaIntIntervento(selectedSquad1).size() < 1);
+
+			//Caso in cui la squadra selezionata ha solo un elemento 
+			if (valuateSolution.getListaIntIntervento(selectedSquad1).size() == 1) {
+				
+				// Ricavo l'id dell'unico intervento posseduto dalla squadra
+				int idIntToDonate = Integer.valueOf(valuateSolution.getListaIntIntervento(selectedSquad1).get(0).getId());
+
+				//Ricavo la lista delle squadre in grado di eseguire l'intervento oltre alla squadra selezionata
+				listaPossSquadre = getListaSquadForInt(idIntToDonate, selectedSquad1);
+				//Se la lista ricavata è vuota setto il parametro reselectTeam per ripetere il ciclo con una nuova squadra
+				if (listaPossSquadre.size() == 0)
+					reselectTeam = true;
+				// Se la lista delle squadre in grado di eseguire l'intervento non è vuota scelgo una squadra casualmente
+				// ed eseguo lo swap di squadra
+				else{
+					int selectedSquad2 = Integer.valueOf(listaPossSquadre.get(sRandom.nextInt(listaPossSquadre.size())));
+					valuateSolution.swapIntFromTwoSquadPriority(selectedSquad1,selectedSquad2,idIntToDonate);
+					reselectTeam = false;
 				}
-				selectedSquad1 = selectedComodoSquad;
-				idIntToDonate = Integer.valueOf(interventi.get(sRandom.nextInt(
-						valuateSolution.getListaIntIntervento(selectedSquad1).size())
-						).getId());
-				listaPossSquadre=getListaSquadForInt(idIntToDonate);
 			}
+			// Caso in cui la squadra ha più di un intevrento
 			else{
-				idIntToDonate = Integer.valueOf(interventi.get(sRandom.nextInt(
-						valuateSolution.getListaIntIntervento(selectedSquad1).size())
-						).getId());
-				listaPossSquadre=getListaSquadForInt(idIntToDonate);
+				// Selezione in modo random un intervento 
+				int sizeList = valuateSolution.getListaIntIntervento(selectedSquad1).size();
+				int idIntToDonate = Integer.valueOf(valuateSolution.getListaIntIntervento(selectedSquad1).get(
+						sRandom.nextInt(sizeList)).getId());
+								
+				//Ricavo la lista delle squadre in grado di eseguire l'intervento oltre alla squadra selezionata
+				listaPossSquadre = getListaSquadForInt(idIntToDonate, selectedSquad1);
+				//Se la lista ricavata è vuota setto il parametro reselectTeam per ripetere il ciclo con una nuova squadra
+				if (listaPossSquadre.size() == 0)
+					reselectTeam = true;
+				// Se la lista delle squadre in grado di eseguire l'intervento non è vuota scelgo una squadra casualmente
+				// ed eseguo lo swap di squadra
+				else{
+					int selectedSquad2 = Integer.valueOf(listaPossSquadre.get(sRandom.nextInt(listaPossSquadre.size())));
+					valuateSolution.swapIntFromTwoSquadPriority(selectedSquad1,selectedSquad2,idIntToDonate);
+					reselectTeam = false;
+				}
 			}
-		}
-		
-		int selectedSquad2 = Integer.valueOf(listaPossSquadre.get(
-				sRandom.nextInt(listaPossSquadre.size()))
-				);
-		while(selectedSquad1 == selectedSquad2){
-			selectedSquad2 = Integer.valueOf(listaPossSquadre.get(
-					sRandom.nextInt(listaPossSquadre.size()))
-					);
-		}
-		
-		valuateSolution.swapIntFromTwoSquadPriority(selectedSquad1,selectedSquad2,idIntToDonate);
+		} while (reselectTeam);
 	}
 	
 	/**
@@ -681,13 +719,13 @@ public class Utility {
 				
 				// Verifico che la squadra selezionata abbia le skills
 				// in caso negativo ne seleziono una nuova in modo random 
-				while(!(checkIntSquad(i, indiceSquadra)) ){
+				while(!(checkIntSquad(Integer.valueOf(intASS.getId()), indiceSquadra)) ){
 					indiceSquadra = sRandom.nextInt(squadre.size());
 				}
 				
 				//aggiungo 1 all'indice i perchè il metodo addIntervento lavora
 				//sugli id degli interventi e non sugli indici di memorizzazione
-				int idInt=i+1;
+				int idInt=Integer.valueOf(intASS.getId());
 				//initialSolution.addIntervento(idInt, indiceSquadra);
 				//Utilizzo la funzione di inserimento che tiene conto del 
 				//vincolo sulla priorità

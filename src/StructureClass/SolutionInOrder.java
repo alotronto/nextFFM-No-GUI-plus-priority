@@ -96,7 +96,7 @@ public class SolutionInOrder {
 					listaInterventiString.add(comodo);
 				}
 				*/
-				//rebuildStringListaInt();
+				rebuildStringListaInt();
 				
 	}
 	/**
@@ -225,7 +225,7 @@ public class SolutionInOrder {
 			listaInterventiString.add(comodo);
 		}
 		*/
-		//rebuildStringListaInt();
+		rebuildStringListaInt();
 		//restituisco l'id dell'intervento eliminato
 		return idIntervento;
 	}
@@ -270,7 +270,7 @@ public class SolutionInOrder {
 			}
 			listaInterventiString.add(comodo);
 		}*/
-		//rebuildStringListaInt();
+		rebuildStringListaInt();
 				
 	}
 	
@@ -288,14 +288,14 @@ public class SolutionInOrder {
 		listaDistanza.clear();
 		listaInterventiString.clear();
 		
-		
+		int indexInt=DataStructure.Utility.getIndexFromId_Intervention(idIntervento);
 		//Priorità Intervento
-		int prio = DataStructure.Utility.interventi.get(idIntervento-1).getPriority();
+		int prio = DataStructure.Utility.interventi.get(indexInt).getPriority();
 		
 		//Sostituire con inserimento che rispetti la priorità
 		if(prio == 0){
 			listaInterventi.get(indiceSquadra).add(
-					DataStructure.Utility.interventi.get(idIntervento-1)
+					DataStructure.Utility.interventi.get(indexInt)
 					);
 		}else{
 			int dim = listaInterventi.get(indiceSquadra).size();
@@ -304,7 +304,7 @@ public class SolutionInOrder {
 				lastHighPri = i;
 			}
 			listaInterventi.get(indiceSquadra).add(lastHighPri,
-					DataStructure.Utility.interventi.get(idIntervento-1)
+					DataStructure.Utility.interventi.get(indexInt)
 					);
 		}
 		
@@ -334,7 +334,7 @@ public class SolutionInOrder {
 			}
 			listaInterventiString.add(comodo);
 		}*/
-		//rebuildStringListaInt();
+		rebuildStringListaInt();
 				
 	}	
 	
@@ -394,11 +394,11 @@ public class SolutionInOrder {
 		ArrayList<Intervento> result = new ArrayList<Intervento>();
 		result = listaInterventi.get(idSquadra);
 		//DEBUG
-		for(int i=0; i<result.size(); i++){
-			System.out.println(result.get(i).getId()+"-");
+		//for(int i=0; i<result.size(); i++){
+		//	System.out.println(result.get(i).getId()+"-");
 			
-		}
-		System.out.println("--");
+		//}
+		//System.out.println("--");
 		return result;
 	}
 	
@@ -473,7 +473,7 @@ public class SolutionInOrder {
 			//	}
 			//	listaInterventiString.add(comodo);
 			//}
-			//rebuildStringListaInt();
+			rebuildStringListaInt();
 			
 			//DEBUG
 			int count = listaInterventi.get(0).size()+
@@ -490,8 +490,10 @@ public class SolutionInOrder {
 	
 	
 	public void swapIntFromTwoSquadPriority(int idSquqadra1, int idSquadra2, int idIntervento){
+		int indexInt = DataStructure.Utility.getIndexFromId_Intervention(idIntervento);
+		
 		//Estraggo l'intervento da rimuovere dalla squadra1
-		Intervento intToSwap = DataStructure.Utility.interventi.get(idIntervento-1);
+		Intervento intToSwap = DataStructure.Utility.interventi.get(indexInt);
 		//Rimuovo l'intervento dalla lista di intervento della squadra1
 		listaInterventi.get(idSquqadra1).remove(intToSwap);
 		
@@ -557,7 +559,7 @@ public class SolutionInOrder {
 			}
 			listaInterventiString.add(comodo);
 		}*/
-		//rebuildStringListaInt();
+		rebuildStringListaInt();
 		
 		//DEBUG
 		int count = listaInterventi.get(0).size()+
@@ -584,7 +586,7 @@ public class SolutionInOrder {
 	/**
 	 * Metodo di comodo per ricreare la lista degli interventi in formato String
 	 */
-	/*private void rebuildStringListaInt(){
+	private void rebuildStringListaInt(){
 		for(int i=0;i<listaInterventi.size();i++){
 			String comodo= new String("");
 			for(int j=0;j<listaInterventi.get(i).size();j++){
@@ -595,6 +597,6 @@ public class SolutionInOrder {
 			}
 			listaInterventiString.add(comodo);
 		}
-	}*/
+	}
 	
 }
