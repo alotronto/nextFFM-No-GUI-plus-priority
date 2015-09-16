@@ -164,6 +164,126 @@ public class Utility {
 		DataBaseUtility.Utility.dbCloseConnection();
 	}
 	
+	
+	
+	/**
+	 * Metodo di supporto per l'inizializzazione degli interventi da utilizzare
+	 * nell'algoritmo esaustivo Il metodo preleverà in modo random @param number
+	 * di interventi dai totali presenti nel DB utilizzato
+	 * 
+	 * @param number
+	 */
+	public static void initInterventiRandom(int numberPA, int numberCA, int numberME) {
+		// Aggiornamento per la versione random e con numero di elementi
+
+		// ***** Prelevo tutti gli interventi dal DB
+		ArrayList<Intervento> totaleInterventi = new ArrayList<Intervento>();
+		ResultSet myResutlSet = DataBaseUtility.Utility.getInterventi();
+		
+		try{
+			while(myResutlSet.next()){
+				totaleInterventi.add(new Intervento(myResutlSet.getString("idIntervento")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		
+		myResutlSet = DataBaseUtility.Utility.getInfoInterventi();
+		try{
+			for(int i=0; i<totaleInterventi.size() && myResutlSet.next(); i++){
+				totaleInterventi.get(i).setPriority(myResutlSet.getInt("priorita"));
+				totaleInterventi.get(i).setDurata(myResutlSet.getInt("durata"));
+				totaleInterventi.get(i).setIdImpianto(myResutlSet.getString("idImpianto"));	
+			}
+			
+			//Competenze necessarie per ogni intervento
+			for(int i=0;i<totaleInterventi.size();i++){
+				myResutlSet = DataBaseUtility.Utility.getCopetenzeIntervento(totaleInterventi.get(i).getId());
+				while(myResutlSet.next()){
+					totaleInterventi.get(i).setCompentenza(myResutlSet.getString("idCompetenza"));
+				}
+			}
+				
+		}catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		DataBaseUtility.Utility.dbCloseConnection();
+		
+		// ****************************************
+		int[] selected = new int[numberPA];
+		// Prelevo solo quelli Custom e in modo Random in provincia di PA
+		for (int i = 0; i < numberPA; i++) {
+			int interventoRandom;
+			if (i == 0) {
+				interventoRandom = sRandom.nextInt(20);
+				selected[i] = interventoRandom;
+				interventi.add(totaleInterventi.get(interventoRandom));
+			} else {
+				do {
+					interventoRandom = sRandom.nextInt(20);
+				} while (checkInVector(selected, interventoRandom));
+				selected[i] = interventoRandom;
+				interventi.add(totaleInterventi.get(interventoRandom));
+			}
+		}
+
+		selected = new int[numberCA];
+		// Prelevo solo quelli Custom e in modo Random in provincia di PA
+		for (int i = 0; i < numberCA; i++) {
+			int interventoRandom;
+
+			if (i == 0) {
+				interventoRandom = sRandom.nextInt(20);
+				interventoRandom += 20;
+				selected[i] = interventoRandom;
+				interventi.add(totaleInterventi.get(interventoRandom));
+			} else {
+				do {
+					interventoRandom = sRandom.nextInt(20);
+					interventoRandom += 20;
+				} while (checkInVector(selected, interventoRandom));
+				selected[i] = interventoRandom;
+				interventi.add(totaleInterventi.get(interventoRandom));
+			}
+		}
+
+		selected = new int[numberME];
+		// Prelevo solo quelli Custom e in modo Random in provincia di PA
+		for (int i = 0; i < numberME; i++) {
+			int interventoRandom;
+
+			if (i == 0) {
+				interventoRandom = sRandom.nextInt(20);
+				interventoRandom += 40;
+				selected[i] = interventoRandom;
+				interventi.add(totaleInterventi.get(interventoRandom));
+			} else {
+				do {
+					interventoRandom = sRandom.nextInt(20);
+					interventoRandom += 40;
+				} while (checkInVector(selected, interventoRandom));
+				selected[i] = interventoRandom;
+				interventi.add(totaleInterventi.get(interventoRandom));
+			}
+		}
+	}
+	
+	/**
+	 * Metdo di support per verifica se nel vettore @param vect è presente un elemento con valore
+	 * @param key
+	 * Il Metodo ritorna true se l'emento è stato trovato
+	 * @return
+	 */
+	public static boolean checkInVector(int[] vect, int key){
+		boolean result = false;
+		for(int i = 0; i< vect.length; i++)
+			if(vect[i]==key)
+				result=true;
+		return result;
+	}
+	
 	/**
 	 * Metodo di supporto per ricavare la distanza tra due impiantia
 	 * @param idOrigine id dell'impianto di partenza
@@ -250,7 +370,7 @@ public class Utility {
 		//Calcolo la distanza totale per visitare tutti gli impianti della lista di interventi
 		for(int i=0;i<listaInterventi.length;i++){
 			//CONTROLLARE QUESTA ISTRUZIONE
-			int indice = listaInterventi[i]-1; //Controllare
+			int indice = getIndexFromId_Intervention(listaInterventi[i]); //Controllare
 			
 			idImpiantoSuccessivo = interventi.get(indice).getIdImpianto();
 			
@@ -362,7 +482,7 @@ public class Utility {
 		//Calcolo la distanza totale per visitare tutti gli impianti della lista di interventi
 		for(int i=0;i<listaInterventi.length;i++){
 			//CONTROLLARE QUESTA ISTRUZIONE
-			int indice = listaInterventi[i]-1; //Controllare
+			int indice = getIndexFromId_Intervention(listaInterventi[i]); //Controllare
 					
 			idImpiantoSuccessivo = interventi.get(indice).getIdImpianto();
 					
@@ -415,7 +535,7 @@ public class Utility {
 		//Calcolo la distanza totale per visitare tutti gli impianti della lista di interventi
 		for(int i=0;i<listaInterventi.length;i++){
 			//CONTROLLARE QUESTA ISTRUZIONE
-			int indice = listaInterventi[i]-1; //Controllare
+			int indice = getIndexFromId_Intervention(listaInterventi[i]); //Controllare
 					
 			idImpiantoSuccessivo = interventi.get(indice).getIdImpianto();
 					
@@ -554,36 +674,58 @@ public class Utility {
 	 * Il metodo al suo termine modificherà la soluzione da valutare
 	 */
 	public static void mossaStessaSquadraPriority(){
+		int count = 0;
 		ArrayList<ArrayList<Intervento>> twoListP = new ArrayList<ArrayList<Intervento>>();
-		
-		int selectedSquad = sRandom.nextInt(squadre.size());
-		twoListP = getListPriority(selectedSquad);
+		int selectedSquad;
+		do{
+			System.out.print("1");
+			selectedSquad = sRandom.nextInt(squadre.size());
+			twoListP = getListPriority(selectedSquad);
+			count++;
+		}
 		
 		//Controllo che la squadra selazionata abbia almeno due interventi nella sua lista
 		//Inoltre controllo che la squadra selezionata abbia almeno due elementi di medesima
 		//piorità
 		//while(valuateSolution.getListaIntIntervento(selectedSquad).size() < 2 && 
-		while		(twoListP.get(0).size() < 2 && twoListP.get(1).size() < 2) {
-			
-			selectedSquad = sRandom.nextInt(squadre.size());
-			twoListP = getListPriority(selectedSquad);
-			
-		}
+		while(twoListP.get(0).size() < 2 && twoListP.get(1).size() < 2 && count!=20); //{
 		
-		//Questo elemento fa riferimento alla lista di interventi valuateSolution
-		int elementToSwap1 = sRandom.nextInt(valuateSolution.getListaIntIntervento(selectedSquad).size());
-		//Mi accerto che l'elento scelto per lo swap abbia almeno un altro di pari priorità
-		while(twoListP.get(valuateSolution.getListaIntIntervento(selectedSquad).get(elementToSwap1).getPriority()).size() <2){
+		if(count==20){
+			//DEBUG
+			System.out.println("SWAP SAME TEAM IS IMPOSSIBLE !!!");
+			System.out.println("Squadra diversa");
+			mossaSquadraDiversa();
+			return;
+		}
+		//	selectedSquad = sRandom.nextInt(squadre.size());
+		//	twoListP = getListPriority(selectedSquad);
+			
+		//}
+		
+		//Estraggo casualmente un intervento della squadra scelta
+		int elementToSwap1;
+		do{
+			System.out.print("2");
 			elementToSwap1 = sRandom.nextInt(valuateSolution.getListaIntIntervento(selectedSquad).size());
 		}
+		//Mi accerto che l'intervento scelto per lo swap abbia almeno un altro di pari priorità
+		while(twoListP.get(valuateSolution.getListaIntIntervento(selectedSquad).get(elementToSwap1).getPriority()).size() <2);//{
+			//elementToSwap1 = sRandom.nextInt(valuateSolution.getListaIntIntervento(selectedSquad).size());
+		//}
 		
-		//Questo elemento fa riferimento alla lista di interventi twoListP
-		int elementToSwap2 = sRandom.nextInt(twoListP.get(
-				valuateSolution.getListaIntIntervento(selectedSquad).get(elementToSwap1).getPriority()
-				).size());
+		//Estraggo un secondo elemento diverso dal precedente
 		
+		int elementToSwap2;
+		do{
+			System.out.print("3");
+			elementToSwap2= sRandom.nextInt(valuateSolution.getListaIntIntervento(selectedSquad).size());
+		}while(valuateSolution.getListaIntIntervento(selectedSquad).get(elementToSwap2).getPriority() !=
+				valuateSolution.getListaIntIntervento(selectedSquad).get(elementToSwap2).getPriority()
+				|| elementToSwap1 == elementToSwap2);
+		
+			
 		//ricavo l'indice del secondo elemento in riferimento alla lista di interventi valuateSolution
-		int indxSwap2;
+		/*int indxSwap2;
 		if(valuateSolution.getListaIntIntervento(selectedSquad).get(elementToSwap1).getPriority() == 1)
 			indxSwap2 = elementToSwap2;
 		else
@@ -600,8 +742,16 @@ public class Utility {
 			else
 				indxSwap2 = twoListP.get(1).size() + elementToSwap2;
 		}
-		
-		valuateSolution.swapIntSameSquad(selectedSquad,elementToSwap1,indxSwap2);
+		*/
+		/*int idInt1= Integer.valueOf(
+				valuateSolution.getListaIntIntervento(selectedSquad).get(elementToSwap1).getId()
+				);
+		int idInt2= Integer.valueOf(
+				valuateSolution.getListaIntIntervento(selectedSquad).get(elementToSwap2).getId()
+				);
+		*/
+		System.out.println("SWAP!!!");
+		valuateSolution.swapIntSameSquad(selectedSquad,elementToSwap1,elementToSwap2);
 	}
 	
 	/**

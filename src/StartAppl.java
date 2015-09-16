@@ -5,7 +5,7 @@ public class StartAppl {
 	public static void main(String[] args) {
 		
 		//Controllo il numero di argomenti
-		if (args.length != 8) {
+		if (args.length != 11) {
 			System.out.println("numero o tipo parapetri passati non valido"); 
 		}
 		else{
@@ -18,8 +18,8 @@ public class StartAppl {
 			DataStructure.Utility.initCostoCarguranti();
 			DataStructure.Utility.initMapSpostamenti();
 			DataStructure.Utility.initSquadre();
-			DataStructure.Utility.initInterventi();
-
+			//DataStructure.Utility.initInterventi();
+			DataStructure.Utility.initInterventiRandom(Integer.valueOf(args[8]), 0, 0);
 			//DataStructure.Utility.createInitialSolutionUniform();
 			DataStructure.Utility.createInitialSolution();
 			

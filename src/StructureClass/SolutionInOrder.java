@@ -476,11 +476,12 @@ public class SolutionInOrder {
 			rebuildStringListaInt();
 			
 			//DEBUG
-			int count = listaInterventi.get(0).size()+
+			/*int count = listaInterventi.get(0).size()+
 					listaInterventi.get(1).size()+
 					listaInterventi.get(2).size()+
 					listaInterventi.get(3).size();
 			System.out.println(count);
+			*/
 		}
 		else{
 			System.err.println("Impossibile effettuare lo swap per la squadra selezionata");
@@ -562,11 +563,12 @@ public class SolutionInOrder {
 		rebuildStringListaInt();
 		
 		//DEBUG
-		int count = listaInterventi.get(0).size()+
+		/*int count = listaInterventi.get(0).size()+
 				listaInterventi.get(1).size()+
 				listaInterventi.get(2).size()+
 				listaInterventi.get(3).size();
 		System.out.println(count);
+		*/
 	}
 	
 	

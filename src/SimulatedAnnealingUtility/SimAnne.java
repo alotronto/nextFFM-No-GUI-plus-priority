@@ -151,6 +151,8 @@ public class SimAnne {
 					System.out.println("Accetto!!");
 					DataStructure.Utility.acceptNewSolution();
 				} else {
+					//DEBUG
+					System.out.println("Non Accetto!!");
 					DataStructure.Utility.restoreToInitialSolution();
 				}
 				i++;
@@ -160,6 +162,8 @@ public class SimAnne {
 			vectorC.add(DataStructure.Utility.initialSolution.getCosto());
 			// Modifico la temperatura (sistema di cooling) sulla base dell'alfa
 			temp = temp - (alfa * temp);
+			//DEBUG 
+			System.out.println("CAmbio TEMP!!!");
 		}
 
 		
