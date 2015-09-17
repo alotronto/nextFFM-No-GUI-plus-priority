@@ -59,45 +59,50 @@ public class SolutionInOrder {
 	 * 
 	 * @param lista
 	 */
-	
-	public void setListaInterventi2(ArrayList<ArrayList<Intervento>> lista){
-		//Creo una ArrayList<String> degli interventi
-				listaInterventiString.clear();
-				listaInterventi.clear();
-				listaTempo.clear();
-				listaCosto.clear();
-				listaDistanza.clear();
-				
-		listaInterventi = new ArrayList<ArrayList<Intervento>>(lista);
-		
-		//Calcolo la lista dei costi,tempi e durata
-				for(int i=0;i<listaInterventi.size();i++){
-					int listaInt[]=new int[listaInterventi.get(i).size()];
-					for(int j=0;j<listaInterventi.get(i).size();j++){
-						int idInt = Integer.valueOf(listaInterventi.get(i).get(j).getId());
-						listaInt[j]=idInt;
-					}
-					listaCosto.add(DataStructure.Utility.costoIntervetiPerSquadra(listaInt, String.valueOf(i)));
-					listaTempo.add(DataStructure.Utility.tempoInterventiPerSquadra(listaInt, String.valueOf(i)));
-					listaDistanza.add(DataStructure.Utility.distanzaInterventiPerSquadra(listaInt, String.valueOf(i)));
-				}
-				//Ricalcolo il costo totale della soluzione
-				costoTotale=0;
-				for(int i=0;i<listaCosto.size();i++){
-					costoTotale+=listaCosto.get(i);
-				}
-				
-				//Ridefinisco la listaInterventiString
-				/*for(int i=0;i<listaInterventi.size();i++){
-					String comodo= new String("");
-					for(int j=0;j<listaInterventi.get(i).size();j++){
-						comodo+=listaInterventi.get(i).get(j).getId();
-					}
-					listaInterventiString.add(comodo);
-				}
-				*/
-				rebuildStringListaInt();
-				
+
+	public void setListaInterventi2(ArrayList<ArrayList<Intervento>> lista) {
+		// Creo una ArrayList<String> degli interventi
+		listaInterventiString.clear();
+		listaInterventi.clear();
+		listaTempo.clear();
+		listaCosto.clear();
+		listaDistanza.clear();
+
+		// TESTTTTT!!!!!!!!!!!!!!!!!
+		for (int i = 0; i < lista.size(); i++) {
+			listaInterventi.add(new ArrayList<Intervento>());
+			for (int j = 0; j < lista.get(i).size(); j++) {
+				listaInterventi.get(i).add(lista.get(i).get(j));
+			}
+		}
+		// listaInterventi = new ArrayList<ArrayList<Intervento>>(lista);
+
+		// Calcolo la lista dei costi,tempi e durata
+		for (int i = 0; i < listaInterventi.size(); i++) {
+			int listaInt[] = new int[listaInterventi.get(i).size()];
+			for (int j = 0; j < listaInterventi.get(i).size(); j++) {
+				int idInt = Integer.valueOf(listaInterventi.get(i).get(j).getId());
+				listaInt[j] = idInt;
+			}
+			listaCosto.add(DataStructure.Utility.costoIntervetiPerSquadra(listaInt, String.valueOf(i)));
+			listaTempo.add(DataStructure.Utility.tempoInterventiPerSquadra(listaInt, String.valueOf(i)));
+			listaDistanza.add(DataStructure.Utility.distanzaInterventiPerSquadra(listaInt, String.valueOf(i)));
+		}
+		// Ricalcolo il costo totale della soluzione
+		costoTotale = 0;
+		for (int i = 0; i < listaCosto.size(); i++) {
+			costoTotale += listaCosto.get(i);
+		}
+
+		// Ridefinisco la listaInterventiString
+		/*
+		 * for(int i=0;i<listaInterventi.size();i++){ String comodo= new
+		 * String(""); for(int j=0;j<listaInterventi.get(i).size();j++){
+		 * comodo+=listaInterventi.get(i).get(j).getId(); }
+		 * listaInterventiString.add(comodo); }
+		 */
+		rebuildStringListaInt();
+
 	}
 	/**
 	 * Metodo per il set della lista di interventi

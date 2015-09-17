@@ -168,7 +168,7 @@ public class Utility {
 	
 	/**
 	 * Metodo di supporto per l'inizializzazione degli interventi da utilizzare
-	 * nell'algoritmo esaustivo Il metodo preleverà in modo random @param number
+	 * nell'algoritmo.  Il metodo preleverà in modo random @param number
 	 * di interventi dai totali presenti nel DB utilizzato
 	 * 
 	 * @param number
@@ -269,6 +269,60 @@ public class Utility {
 			}
 		}
 	}
+	
+
+	
+	/**
+	 * Metodo di supporto per l'inizializzazione degli interventi da utilizzare
+	 * nell'algoritmo.
+	 * Il metodo preleverà solo gli interventi con ID contenuti in @param listOfID
+	 * dai totali presenti nel DB utilizzato
+	 */
+	public static void initInterventiFromList(int[] listOfID) {
+		// Aggiornamento per la versione random e con numero di elementi
+
+		// ***** Prelevo tutti gli interventi dal DB
+		ArrayList<Intervento> totaleInterventi = new ArrayList<Intervento>();
+		ResultSet myResutlSet = DataBaseUtility.Utility.getInterventi();
+		
+		try{
+			while(myResutlSet.next()){
+				totaleInterventi.add(new Intervento(myResutlSet.getString("idIntervento")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		
+		myResutlSet = DataBaseUtility.Utility.getInfoInterventi();
+		try{
+			for(int i=0; i<totaleInterventi.size() && myResutlSet.next(); i++){
+				totaleInterventi.get(i).setPriority(myResutlSet.getInt("priorita"));
+				totaleInterventi.get(i).setDurata(myResutlSet.getInt("durata"));
+				totaleInterventi.get(i).setIdImpianto(myResutlSet.getString("idImpianto"));	
+			}
+			
+			//Competenze necessarie per ogni intervento
+			for(int i=0;i<totaleInterventi.size();i++){
+				myResutlSet = DataBaseUtility.Utility.getCopetenzeIntervento(totaleInterventi.get(i).getId());
+				while(myResutlSet.next()){
+					totaleInterventi.get(i).setCompentenza(myResutlSet.getString("idCompetenza"));
+				}
+			}
+				
+		}catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		DataBaseUtility.Utility.dbCloseConnection();
+		// ****************************************
+		
+		for(int i=0; i<listOfID.length;i++){
+			int index = getIndexFromId_Intervention(listOfID[i],totaleInterventi);
+			interventi.add(totaleInterventi.get(index));		
+		}
+	}
+	
 	
 	/**
 	 * Metdo di support per verifica se nel vettore @param vect è presente un elemento con valore
@@ -597,6 +651,22 @@ public class Utility {
 		}
 		return result;
 	}
+	
+	/**
+	 * Metodi di supporto che ritorno l'indice dell'ArrayList  @param listaInt 
+	 * di Interventi il cui elemento ha id uguale a @param idIntervention
+	 * @return idex
+	 */
+	public static int getIndexFromId_Intervention(int idIntervention, ArrayList<Intervento> listaInt){
+		int result = -1;
+		for(int i=0; i<listaInt.size(); i++){
+			if(Integer.valueOf(listaInt.get(i).getId()) == idIntervention){
+				result = i;
+				return result;
+			}
+		}
+		return result;
+	}
 
 	/**
 	 * Metodo di supporto per ottenere una lista di squadre che hanno le competenze
@@ -678,7 +748,7 @@ public class Utility {
 		ArrayList<ArrayList<Intervento>> twoListP = new ArrayList<ArrayList<Intervento>>();
 		int selectedSquad;
 		do{
-			System.out.print("1");
+			//System.out.print("1");
 			selectedSquad = sRandom.nextInt(squadre.size());
 			twoListP = getListPriority(selectedSquad);
 			count++;
@@ -692,8 +762,8 @@ public class Utility {
 		
 		if(count==20){
 			//DEBUG
-			System.out.println("SWAP SAME TEAM IS IMPOSSIBLE !!!");
-			System.out.println("Squadra diversa");
+			//System.out.println("SWAP SAME TEAM IS IMPOSSIBLE !!!");
+			//System.out.println("Squadra diversa");
 			mossaSquadraDiversa();
 			return;
 		}
@@ -705,7 +775,7 @@ public class Utility {
 		//Estraggo casualmente un intervento della squadra scelta
 		int elementToSwap1;
 		do{
-			System.out.print("2");
+			//System.out.print("2");
 			elementToSwap1 = sRandom.nextInt(valuateSolution.getListaIntIntervento(selectedSquad).size());
 		}
 		//Mi accerto che l'intervento scelto per lo swap abbia almeno un altro di pari priorità
@@ -717,7 +787,7 @@ public class Utility {
 		
 		int elementToSwap2;
 		do{
-			System.out.print("3");
+			//System.out.print("3");
 			elementToSwap2= sRandom.nextInt(valuateSolution.getListaIntIntervento(selectedSquad).size());
 		}while(valuateSolution.getListaIntIntervento(selectedSquad).get(elementToSwap2).getPriority() !=
 				valuateSolution.getListaIntIntervento(selectedSquad).get(elementToSwap2).getPriority()
@@ -750,7 +820,7 @@ public class Utility {
 				valuateSolution.getListaIntIntervento(selectedSquad).get(elementToSwap2).getId()
 				);
 		*/
-		System.out.println("SWAP!!!");
+		//System.out.println("SWAP!!!");
 		valuateSolution.swapIntSameSquad(selectedSquad,elementToSwap1,elementToSwap2);
 	}
 	
@@ -1055,12 +1125,12 @@ public class Utility {
 	public static void createNearSolution(int nStessaSquadra, int nSquadraDiversa){
 		for(int i=0;i<nStessaSquadra;i++){
 			//DEBUG
-			System.out.println("Stessa Squadra");
+			//System.out.println("Stessa Squadra");
 			mossaStessaSquadraPriority();
 		}
 		for(int i=0; i<nSquadraDiversa;i++){
 			//DEBUG
-			System.out.println("Squadra Diversa");
+			//System.out.println("Squadra Diversa");
 			mossaSquadraDiversa();
 		}
 	}

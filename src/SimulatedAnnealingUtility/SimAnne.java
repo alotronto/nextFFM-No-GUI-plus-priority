@@ -109,18 +109,19 @@ public class SimAnne {
 
 	public void findBestSolution() {
 		long startTime = System.nanoTime();
-		temp=DataStructure.Utility.initialSolution.getCosto();
+		temp = DataStructure.Utility.initialSolution.getCosto();
 		tempLow = setNewTemperature(cooling);
 		vectorC.clear();
-		//bestC = temp;
+		// bestC = temp;
 		int count = 0;// Variabile per testare il numero di cicli wile fatti
-		while ( (!checkStopCriteria()) && (temp > tempLow)) {
-			//DEBUGGG
-			System.out.println(temp +"/"+tempLow);
-		//while ( (!checkStopCriteriaIntorno()) && (temp > tempLow)) {
+		while ((!checkStopCriteria()) && (temp > tempLow)) {
+			// DEBUGGG
+			// System.out.println(temp +"/"+tempLow);
+			// while ( (!checkStopCriteriaIntorno()) && (temp > tempLow)) {
 			int i = 0;
 			count++;
-			//System.out.println("Distanza Attuale::"+currentSolution.getDistance());
+			// System.out.println("Distanza
+			// Attuale::"+currentSolution.getDistance());
 			while (i < nIteration) {
 				// Creazione di una nuova Soluzione Vicina al problema di
 				// partenza
@@ -129,30 +130,29 @@ public class SimAnne {
 				int r = DataStructure.Utility.sRandom.nextInt(2);
 				if (r == 0) {
 					DataStructure.Utility.createNearSolution(1, 0);
-				}
-				else {
+				} else {
 					DataStructure.Utility.createNearSolution(0, 1);
 				}
 				// Calcolo dei costi (distanza in questo caso)
 				// double currentEngery = currentSolution.getDistance();
 				float currentEngery = DataStructure.Utility.initialSolution.getCosto();
 				float neighbourEngery = DataStructure.Utility.valuateSolution.getCosto();
-				
-				//DEBUG
-				System.out.println("Init:"+DataStructure.Utility.initialSolution.toString());
-				System.out.println("Value:"+DataStructure.Utility.valuateSolution.toString());
+
+				// DEBUG
+				// System.out.println("Init:"+DataStructure.Utility.initialSolution.toString());
+				// System.out.println("Value:"+DataStructure.Utility.valuateSolution.toString());
 
 				// Comparazione del costo della nuova soluzione con quello della
 				// vecchia
 				// ed accettazione della nuova soluzione sulla base della
 				// funziore di accettazione
 				if (accettazione(neighbourEngery, currentEngery)) {
-					//DEBUG
-					System.out.println("Accetto!!");
+					// DEBUG
+					// System.out.println("Accetto!!");
 					DataStructure.Utility.acceptNewSolution();
 				} else {
-					//DEBUG
-					System.out.println("Non Accetto!!");
+					// DEBUG
+					// System.out.println("Non Accetto!!");
 					DataStructure.Utility.restoreToInitialSolution();
 				}
 				i++;
@@ -162,33 +162,29 @@ public class SimAnne {
 			vectorC.add(DataStructure.Utility.initialSolution.getCosto());
 			// Modifico la temperatura (sistema di cooling) sulla base dell'alfa
 			temp = temp - (alfa * temp);
-			//DEBUG 
-			System.out.println("CAmbio TEMP!!!");
+			// DEBUG
+			// System.out.println("CAmbio TEMP!!!");
 		}
 
-		
-		//Memorizzo il tempo di esecuzione del SA
+		// Memorizzo il tempo di esecuzione del SA
 		long estimatedTime = System.nanoTime() - startTime;
 		int iteration = count * nIteration;
-		
-		Utility.openFile("iteration_time" + getnIteration() + "_"
-				+ getnValuate() + "_" + getCooling() + "_" + getAlfa() + ".txt");
-		Utility.printToFile(iteration+ "\t"+
-				TimeUnit.MILLISECONDS.convert(estimatedTime,TimeUnit.NANOSECONDS) + "\n");
-		Utility.closefile();
-		
-		
 
-		/*Utility.openFile("count_check_intorno" + getnIteration() + "_"
-						+ getnValuate() + "_" + getCooling() + "_" + getAlfa()
-						+ ".txt");
-		if (checkStopCriteriaIntorno()) 
-			Utility.printToFile("1\n");
-		
+		Utility.openFile("iteration_time" + getnIteration() + "_" + getnValuate() + "_" + getCooling() + "_" + getAlfa()
+				+ ".txt");
+		Utility.printToFile(
+				iteration + "\t" + TimeUnit.MILLISECONDS.convert(estimatedTime, TimeUnit.NANOSECONDS) + "\n");
 		Utility.closefile();
-		*/
-		//DEBUG
-		System.out.println("FINE::::"+DataStructure.Utility.initialSolution.toString());
+
+		/*
+		 * Utility.openFile("count_check_intorno" + getnIteration() + "_" +
+		 * getnValuate() + "_" + getCooling() + "_" + getAlfa() + ".txt"); if
+		 * (checkStopCriteriaIntorno()) Utility.printToFile("1\n");
+		 * 
+		 * Utility.closefile();
+		 */
+		// DEBUG
+		System.out.println("FINE::::" + DataStructure.Utility.initialSolution.toString());
 	}
 	/**
 	 * Metodo per l'accettazione della nuova soluzione sulla base della comparazione del costo

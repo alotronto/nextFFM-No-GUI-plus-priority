@@ -19,7 +19,13 @@ public class StartAppl {
 			DataStructure.Utility.initMapSpostamenti();
 			DataStructure.Utility.initSquadre();
 			//DataStructure.Utility.initInterventi();
-			DataStructure.Utility.initInterventiRandom(Integer.valueOf(args[8]), 0, 0);
+			//DataStructure.Utility.initInterventiRandom(Integer.valueOf(args[8]), 
+			//		Integer.valueOf(args[9]), Integer.valueOf(args[10]));
+			
+			int [] listOfID={1,19,8,30,33,31,57,42,51};
+			
+			DataStructure.Utility.initInterventiFromList(listOfID);
+			
 			//DataStructure.Utility.createInitialSolutionUniform();
 			DataStructure.Utility.createInitialSolution();
 			
