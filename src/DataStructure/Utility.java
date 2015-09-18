@@ -12,6 +12,7 @@ import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
@@ -30,7 +31,8 @@ public class Utility {
 	private static BufferedWriter myBufferWriter;
 	
 	//Attributi della classe per la memorizzazione delle squadre, interventi
-	public static ArrayList<Intervento> interventi = new ArrayList<Intervento>();
+	//public static ArrayList<Intervento> interventi = new ArrayList<Intervento>();
+	public static HashMap<String, String> interventi = new HashMap<String, String>();
 	public static ArrayList<Squadra> squadre = new ArrayList<Squadra>();
 	
 	//Attributi per il calcolo del costo delle soluzioni

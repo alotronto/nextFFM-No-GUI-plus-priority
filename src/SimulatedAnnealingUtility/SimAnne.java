@@ -108,7 +108,8 @@ public class SimAnne {
 	 */
 
 	public void findBestSolution() {
-		long startTime = System.nanoTime();
+		//long startTime = System.nanoTime();
+		long startTime = System.currentTimeMillis();
 		temp = DataStructure.Utility.initialSolution.getCosto();
 		tempLow = setNewTemperature(cooling);
 		vectorC.clear();
@@ -167,13 +168,14 @@ public class SimAnne {
 		}
 
 		// Memorizzo il tempo di esecuzione del SA
-		long estimatedTime = System.nanoTime() - startTime;
+		long estimatedTime = System.currentTimeMillis() - startTime;
+		
 		int iteration = count * nIteration;
 
 		Utility.openFile("iteration_time" + getnIteration() + "_" + getnValuate() + "_" + getCooling() + "_" + getAlfa()
 				+ ".txt");
 		Utility.printToFile(
-				iteration + "\t" + TimeUnit.MILLISECONDS.convert(estimatedTime, TimeUnit.NANOSECONDS) + "\n");
+				iteration + "\t" +estimatedTime+ "\n");
 		Utility.closefile();
 
 		/*
