@@ -402,7 +402,7 @@ public class Utility {
 	 * @param idDestinazione id dell'impinato di destinazione
 	 * @return double della tempo di percorrenza
 	 */
-	public static float getDurataSpostamentiImpinatiHash(String idOrigine, String idDestinazione){
+	/*public static float getDurataSpostamentiImpinatiHash(String idOrigine, String idDestinazione){
 		
 		float durata=0;
 		
@@ -417,6 +417,27 @@ public class Utility {
 				return durata;
 			}
 		}
+		
+		return durata;
+	}*/
+	
+	/**
+	 * Metodo di supporto per ricavare la distanza tra due impiantia
+	 * @param idOrigine id dell'impianto di partenza
+	 * @param idDestinazione id dell'impinato di destinazione
+	 * @return double della distanza tra i due impinati
+	 */
+	public static float getDurataSpostamentiImpinatiHashNew(String idOrigine, String idDestinazione){
+		
+		float durata=0;
+		
+		String key1 = idOrigine+"-"+idDestinazione;
+		String key2 = idDestinazione+"-"+idOrigine;
+		String[] result = distanzeImpiantiNew.get(key1);
+		if(result==null)
+			result = distanzeImpiantiNew.get(key2);
+			
+		durata = Float.valueOf(result[1]);
 		
 		return durata;
 	}
@@ -469,7 +490,7 @@ public class Utility {
 				
 				//AGGIORNO IL TEMPO TOTALE DEGLI SPOSTAMENTI
 				//durataSpostamenti+=getDurataSpostamentiImpinati(idImpiantoAttuale, idImpiantoSuccessivo);
-				durataSpostamenti+=getDurataSpostamentiImpinatiHash(idImpiantoAttuale, idImpiantoSuccessivo);
+				durataSpostamenti+=getDurataSpostamentiImpinatiHashNew(idImpiantoAttuale, idImpiantoSuccessivo);
 				
 				//AGGIORNO IL TEMPO TOTALE DI INTERVENTI
 				durataInterventi+=interventi.get(indice).getDurata();
@@ -488,7 +509,7 @@ public class Utility {
 		if(! (idImpiantoAttuale.equals(idSedediPartenza)) ){
 			
 			distanzaTotale+=getDistanzaSpostamentiImpinatiHashNew(idImpiantoAttuale, idSedediPartenza);
-			durataSpostamenti+=getDurataSpostamentiImpinatiHash(idImpiantoAttuale, idSedediPartenza);
+			durataSpostamenti+=getDurataSpostamentiImpinatiHashNew(idImpiantoAttuale, idSedediPartenza);
 			//distanzaTotale+=getDistanzaImpianti(idImpiantoAttuale, idSedediPartenza);
 			//durataSpostamenti+=getDurataSpostamentiImpinati(idImpiantoAttuale, idSedediPartenza);
 		}
@@ -575,7 +596,7 @@ public class Utility {
 					
 			if(! (idImpiantoAttuale.equals(idImpiantoSuccessivo)) ){
 				//AGGIORNO IL TEMPO TOTALE DEGLI SPOSTAMENTI
-				durataSpostamenti+=getDurataSpostamentiImpinatiHash(idImpiantoAttuale, idImpiantoSuccessivo);
+				durataSpostamenti+=getDurataSpostamentiImpinatiHashNew(idImpiantoAttuale, idImpiantoSuccessivo);
 						
 				//AGGIORNO IL TEMPO TOTALE DI INTERVENTI
 				durataInterventi+=interventi.get(indice).getDurata();
@@ -592,7 +613,7 @@ public class Utility {
 		//SE NON SONO GIA' NELLA SEDE DI PARTENZA
 		if(! (idImpiantoAttuale.equals(idSedediPartenza)) ){
 			
-			durataSpostamenti+=getDurataSpostamentiImpinatiHash(idImpiantoAttuale, idSedediPartenza);
+			durataSpostamenti+=getDurataSpostamentiImpinatiHashNew(idImpiantoAttuale, idSedediPartenza);
 			
 		}
 				
