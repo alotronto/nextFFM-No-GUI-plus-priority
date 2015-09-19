@@ -37,6 +37,7 @@ public class Utility {
 	
 	//Attributi per il calcolo del costo delle soluzioni
 	public static ArrayList<Map<String, String>> distanzeImpianti = new ArrayList<Map<String, String>>();
+	public static HashMap<String, String[]> distanzeImpiantiNew = new HashMap<String, String[]>();
 	private static float costoBenzina;
 	private static float costoDiesel;
 	private static String idSedediPartenza="0";
@@ -71,6 +72,14 @@ public class Utility {
 	 */
 	public static void initMapSpostamenti(){
 		distanzeImpianti = DataBaseUtility.Utility.getMapSpostamenti();
+	}
+	
+	/**
+	 * Metodo per l'inizializzazione dell'oggetto Map per la memorizzazione delle
+	 * distanze
+	 */
+	public static void initMapSpostamentiNewVersion(){
+		distanzeImpiantiNew = DataBaseUtility.Utility.getMapSpostamentiNewVersion();
 	}
 	
 	/**
@@ -349,6 +358,34 @@ public class Utility {
 	public static float getDistanzaSpostamentiImpinatiHash(String idOrigine, String idDestinazione){
 		
 		float distanza=0;
+		
+		for(int i=0;i<distanzeImpianti.size();i++){
+			
+			if((distanzeImpianti.get(i).get("idImpianto1").equals(idOrigine)) && (distanzeImpianti.get(i).get("idImpianto2").equals(idDestinazione))){
+				distanza= Float.valueOf(distanzeImpianti.get(i).get("distanza"));
+				return distanza;
+			}
+			if((distanzeImpianti.get(i).get("idImpianto2").equals(idOrigine)) && (distanzeImpianti.get(i).get("idImpianto1").equals(idDestinazione))){
+				distanza= Float.valueOf(distanzeImpianti.get(i).get("distanza"));
+				return distanza;
+			}
+		}
+		
+		return distanza;
+	}
+	
+	/**
+	 * Metodo di supporto per ricavare la distanza tra due impiantia
+	 * @param idOrigine id dell'impianto di partenza
+	 * @param idDestinazione id dell'impinato di destinazione
+	 * @return double della distanza tra i due impinati
+	 */
+	public static float getDistanzaSpostamentiImpinatiHashNew(String idOrigine, String idDestinazione){
+		
+		float distanza=0;
+		
+		String key = idOrigine+"-"+idDestinazione;
+		String[] result = distanzeImpiantiNew.get(key);
 		
 		for(int i=0;i<distanzeImpianti.size();i++){
 			

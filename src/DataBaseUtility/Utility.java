@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.activation.MailcapCommandMap;
+
 public class Utility {
 	
 	
@@ -265,7 +267,7 @@ public class Utility {
 	
 	
 	/**
-	 * Metdo di supporto per la creazione di una mappa contenete i valodi di distanze e tempi 
+	 * Metodo di supporto per la creazione di una mappa contenete i valodi di distanze e tempi 
 	 */
 	public static ArrayList<Map<String, String>> getMapSpostamenti(){
 		
@@ -284,6 +286,42 @@ public class Utility {
 				row.put(myMeta.getColumnName(4), myResultSet.getString(4));
 				
 				result.add(row);
+			}
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			
+		}
+		finally{
+			dbCloseConnection();
+		}
+		return result;
+	}
+	
+	/**
+	 * Metodo di supporto per la creazione di una mappa contenete i valodi di distanze e tempi 
+	 */
+	public static HashMap<String, String[]> getMapSpostamentiNewVersion(){
+		
+		HashMap<String, String[]> result = new HashMap<String, String[]>();
+		dbOpenConnection(host, db, user, pass);
+		try{
+			myStatement = myConnection.createStatement();
+			myResultSet = myStatement.executeQuery("Select * From distanzeimpianti; ");
+			//ResultSetMetaData myMeta = myResultSet.getMetaData();
+			
+			while(myResultSet.next()){
+				String key = myResultSet.getString(1)+"-"+myResultSet.getString(2);
+				String [] value = {myResultSet.getString(3), myResultSet.getString(4)};
+				result.put(key, value);
+				//HashMap<String, String> row = new HashMap<String, String>();
+				//row.put(myMeta.getColumnName(1), myResultSet.getString(1));
+				//row.put(myMeta.getColumnName(2), myResultSet.getString(2));
+				//row.put(myMeta.getColumnName(3), myResultSet.getString(3));
+				//row.put(myMeta.getColumnName(4), myResultSet.getString(4));
+				//result.add(row);
 			}
 		}
 		catch (SQLException e) {
