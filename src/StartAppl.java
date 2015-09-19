@@ -14,7 +14,8 @@ public class StartAppl {
 			DataBaseUtility.Utility.setPass(String.valueOf(args[3]));
 
 			DataStructure.Utility.initCostoCarguranti();
-			DataStructure.Utility.initMapSpostamenti();
+			//DataStructure.Utility.initMapSpostamenti();
+			DataStructure.Utility.initMapSpostamentiNewVersion();
 			DataStructure.Utility.initSquadre();
 			// DataStructure.Utility.initInterventi();
 			// DataStructure.Utility.initInterventiRandom(Integer.valueOf(args[8]),

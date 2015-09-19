@@ -31,8 +31,8 @@ public class Utility {
 	private static BufferedWriter myBufferWriter;
 	
 	//Attributi della classe per la memorizzazione delle squadre, interventi
-	//public static ArrayList<Intervento> interventi = new ArrayList<Intervento>();
-	public static HashMap<String, String> interventi = new HashMap<String, String>();
+	public static ArrayList<Intervento> interventi = new ArrayList<Intervento>();
+	//public static HashMap<String, String> interventi = new HashMap<String, String>();
 	public static ArrayList<Squadra> squadre = new ArrayList<Squadra>();
 	
 	//Attributi per il calcolo del costo delle soluzioni
@@ -355,6 +355,7 @@ public class Utility {
 	 * @param idDestinazione id dell'impinato di destinazione
 	 * @return double della distanza tra i due impinati
 	 */
+	/*
 	public static float getDistanzaSpostamentiImpinatiHash(String idOrigine, String idDestinazione){
 		
 		float distanza=0;
@@ -373,7 +374,7 @@ public class Utility {
 		
 		return distanza;
 	}
-	
+	*/
 	/**
 	 * Metodo di supporto per ricavare la distanza tra due impiantia
 	 * @param idOrigine id dell'impianto di partenza
@@ -384,20 +385,13 @@ public class Utility {
 		
 		float distanza=0;
 		
-		String key = idOrigine+"-"+idDestinazione;
-		String[] result = distanzeImpiantiNew.get(key);
-		
-		for(int i=0;i<distanzeImpianti.size();i++){
+		String key1 = idOrigine+"-"+idDestinazione;
+		String key2 = idDestinazione+"-"+idOrigine;
+		String[] result = distanzeImpiantiNew.get(key1);
+		if(result==null)
+			result = distanzeImpiantiNew.get(key2);
 			
-			if((distanzeImpianti.get(i).get("idImpianto1").equals(idOrigine)) && (distanzeImpianti.get(i).get("idImpianto2").equals(idDestinazione))){
-				distanza= Float.valueOf(distanzeImpianti.get(i).get("distanza"));
-				return distanza;
-			}
-			if((distanzeImpianti.get(i).get("idImpianto2").equals(idOrigine)) && (distanzeImpianti.get(i).get("idImpianto1").equals(idDestinazione))){
-				distanza= Float.valueOf(distanzeImpianti.get(i).get("distanza"));
-				return distanza;
-			}
-		}
+		distanza = Float.valueOf(result[0]);
 		
 		return distanza;
 	}
@@ -470,7 +464,7 @@ public class Utility {
 			if(! (idImpiantoAttuale.equals(idImpiantoSuccessivo)) ){
 				//AGGIORNO LA DISTANZA TOTALE PERCORSA
 				
-				distanzaTotale+=getDistanzaSpostamentiImpinatiHash(idImpiantoAttuale, idImpiantoSuccessivo);
+				distanzaTotale+=getDistanzaSpostamentiImpinatiHashNew(idImpiantoAttuale, idImpiantoSuccessivo);
 				//distanzaTotale+=getDistanzaImpianti(idImpiantoAttuale, idImpiantoSuccessivo);
 				
 				//AGGIORNO IL TEMPO TOTALE DEGLI SPOSTAMENTI
@@ -493,7 +487,7 @@ public class Utility {
 		//SE NON SONO GIA' NELLA SEDE DI PARTENZA
 		if(! (idImpiantoAttuale.equals(idSedediPartenza)) ){
 			
-			distanzaTotale+=getDistanzaSpostamentiImpinatiHash(idImpiantoAttuale, idSedediPartenza);
+			distanzaTotale+=getDistanzaSpostamentiImpinatiHashNew(idImpiantoAttuale, idSedediPartenza);
 			durataSpostamenti+=getDurataSpostamentiImpinatiHash(idImpiantoAttuale, idSedediPartenza);
 			//distanzaTotale+=getDistanzaImpianti(idImpiantoAttuale, idSedediPartenza);
 			//durataSpostamenti+=getDurataSpostamentiImpinati(idImpiantoAttuale, idSedediPartenza);
@@ -635,7 +629,7 @@ public class Utility {
 			if(! (idImpiantoAttuale.equals(idImpiantoSuccessivo)) ){
 				//AGGIORNO LA DISTANZA TOTALE PERCORSA
 						
-				distanzaTotale+=getDistanzaSpostamentiImpinatiHash(idImpiantoAttuale, idImpiantoSuccessivo);
+				distanzaTotale+=getDistanzaSpostamentiImpinatiHashNew(idImpiantoAttuale, idImpiantoSuccessivo);
 						
 					
 				//IMPOSTO AGGIORNO L'IMPIANTO ATTUALE
@@ -645,7 +639,7 @@ public class Utility {
 		//AGGIUNGO ALLA DISTANZA PERCORSA IL RITORNO ALLA SEDE DI PARTENZA
 		//SE NON SONO GIA' NELLA SEDE DI PARTENZA
 		if(! (idImpiantoAttuale.equals(idSedediPartenza)) ){
-			distanzaTotale+=getDistanzaSpostamentiImpinatiHash(idImpiantoAttuale, idSedediPartenza);
+			distanzaTotale+=getDistanzaSpostamentiImpinatiHashNew(idImpiantoAttuale, idSedediPartenza);
 		}
 		
 		return distanzaTotale;
