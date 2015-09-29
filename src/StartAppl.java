@@ -5,7 +5,7 @@ public class StartAppl {
 	public static void main(String[] args) {
 
 		// Controllo il numero di argomenti
-		if (args.length != 9) {
+		if (args.length != 11) {
 			System.out.println("numero o tipo parapetri passati non valido");
 		} else {
 			DataBaseUtility.Utility.setHost(String.valueOf(args[0]));
@@ -18,18 +18,18 @@ public class StartAppl {
 			DataStructure.Utility.initMapSpostamentiNewVersion();
 			DataStructure.Utility.initSquadre();
 			// DataStructure.Utility.initInterventi();
-			// DataStructure.Utility.initInterventiRandom(Integer.valueOf(args[8]),
-			// Integer.valueOf(args[9]), Integer.valueOf(args[10]));
+			DataStructure.Utility.initInterventiRandom(Integer.valueOf(args[8]),
+			Integer.valueOf(args[9]), Integer.valueOf(args[10]));
 
 			// Manage the 8th parameter of Main
-			String listOfIDString = args[8];
-			String[] ArrayoflistOfID = listOfIDString.split("-");
-			int[] listOfID = new int[ArrayoflistOfID.length];
-			for (int i = 0; i < ArrayoflistOfID.length; i++)
-				listOfID[i] = Integer.valueOf(ArrayoflistOfID[i]);
+			//String listOfIDString = args[8];
+			//String[] ArrayoflistOfID = listOfIDString.split("-");
+			//int[] listOfID = new int[ArrayoflistOfID.length];
+			//for (int i = 0; i < ArrayoflistOfID.length; i++)
+			//	listOfID[i] = Integer.valueOf(ArrayoflistOfID[i]);
 			// End of Manage 8th parameter of Main
 
-			DataStructure.Utility.initInterventiFromList(listOfID);
+			//DataStructure.Utility.initInterventiFromList(listOfID);
 
 			// DataStructure.Utility.createInitialSolutionUniform();
 			DataStructure.Utility.createInitialSolution();

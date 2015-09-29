@@ -224,6 +224,8 @@ public class Utility {
 		
 		// ****************************************
 		int[] selected = new int[numberPA];
+		for(int i=0;i<selected.length;i++)
+			selected[i]=-1;
 		// Prelevo solo quelli Custom e in modo Random in provincia di PA
 		for (int i = 0; i < numberPA; i++) {
 			int interventoRandom;
@@ -241,6 +243,8 @@ public class Utility {
 		}
 
 		selected = new int[numberCA];
+		for(int i=0;i<selected.length;i++)
+			selected[i]=-1;
 		// Prelevo solo quelli Custom e in modo Random in provincia di PA
 		for (int i = 0; i < numberCA; i++) {
 			int interventoRandom;
@@ -261,6 +265,8 @@ public class Utility {
 		}
 
 		selected = new int[numberME];
+		for(int i=0;i<selected.length;i++)
+			selected[i]=-1;
 		// Prelevo solo quelli Custom e in modo Random in provincia di PA
 		for (int i = 0; i < numberME; i++) {
 			int interventoRandom;
